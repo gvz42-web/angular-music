@@ -1,0 +1,19 @@
+<p-toolbar>
+  <div class="flex justify-content-between align-items-center gap-6">
+    <p-button [icon]="!animationService.isStarted ? 'pi pi-caret-right' : 'pi pi-pause'" (click)="toggleAnimation()"></p-button>
+<!--    <p-knob [(ngModel)]="configService.speed"></p-knob>-->
+    <div class="flex justify-content-center align-items-center flex-column gap-4">
+      <span>Speed</span>
+      <p-slider [style]="{width: '100px'}" [(ngModel)]="speed" (onChange)="changeSpeed($event.value)" [min]="1" [max]="60"></p-slider>
+    </div>
+    <div class="flex justify-content-center align-items-center flex-column gap-4">
+      <span>Min height</span>
+      <p-slider [style]="{width: '100px'}" [(ngModel)]="minHeight" (onChange)="changeMinHeight($event.value)" [min]="10" [max]="100"></p-slider>
+    </div>
+    <div class="flex justify-content-center align-items-center flex-column gap-4">
+      <span>dH</span>
+      <p-slider [style]="{width: '100px'}" [(ngModel)]="dh" (onChange)="changeDH($event.value)" [min]="10" [max]="50"></p-slider>
+    </div>
+  </div>
+  <p-button severity="danger" (click)="reset()" [outlined]="true" icon="pi pi-undo" label="Reset"></p-button>
+</p-toolbar>

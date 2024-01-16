@@ -1,0 +1,5 @@
+<p-toolbar>
+  <div class="flex p-toolbar-group-center justify-content-between">
+    <p-dropdown *ngFor="let note of notes; index as i" [options]="notesAll" [(ngModel)]="notes[i]" (onChange)="updateNote(i, $event.value)" placeholder="Note"></p-dropdown>
+  </div>
+</p-toolbar>
