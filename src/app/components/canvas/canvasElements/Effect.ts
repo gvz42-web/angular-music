@@ -12,8 +12,8 @@ export class Effect {
   draw(elapsed: number) {
     this._time -= elapsed
     if (this._time >= 0) {
-      this._ctx.shadowBlur = 40
-      this._ctx.shadowColor = `rgba(255,255,255,${this._time/this._duration * 0.6})`
+      this._ctx.shadowBlur = 30
+      this._ctx.shadowColor = `rgba(255,255,255,${this._time/this._duration})`
       return true
     } else {
       return false

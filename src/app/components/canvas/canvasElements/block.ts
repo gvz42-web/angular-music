@@ -57,6 +57,9 @@ export class Block {
   }
 
   modify(newHeight: number) {
+    if (this.y + newHeight > 600) {
+      this.y -= this.y + newHeight - 600
+    }
     this.height = newHeight
   }
 
