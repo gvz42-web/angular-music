@@ -30,7 +30,9 @@ export class AnimationService {
     this.initDraw()
 
     document.addEventListener('visibilitychange', (event) => {
-      this.toggle()
+      if (this._isStarted) {
+        this.toggle()
+      }
     });
 
     this.configService.minHeight$.subscribe(() => this.modify())
