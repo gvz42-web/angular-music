@@ -6,9 +6,10 @@ import * as Tone from 'tone'
 })
 export class SoundService {
   private synth!: Tone.Sampler;
+  private reverb!: Tone.Reverb;
 
   constructor() {
-    const reverb = new Tone.Reverb(30).toDestination();
+    this.reverb = new Tone.Reverb(30).toDestination();
 
     this.synth = new Tone.Sampler({
       urls: {
@@ -18,7 +19,7 @@ export class SoundService {
       baseUrl: "https://tonejs.github.io/audio/casio/",
     })
 
-    this.synth.connect(reverb)
+    this.synth.connect(this.reverb)
   }
 
   start() {

@@ -3,7 +3,7 @@ import {AnimationFrameService} from "./animation-frame.service";
 import {Block} from "./components/canvas/canvasElements/block";
 import {SoundService} from "./sound.service";
 import {ConfigService} from "./config.service";
-import {Observable, Subscription} from "rxjs";
+import { Subscription} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,6 @@ import {Observable, Subscription} from "rxjs";
 export class AnimationService {
   private ctx!: CanvasRenderingContext2D;
   private blocks!: Block[];
-  private notes!: string[]
   private animationSubscription!: Subscription;
   private _isStarted!: boolean;
 
@@ -20,7 +19,6 @@ export class AnimationService {
     private soundService: SoundService,
     private configService: ConfigService
   ) {
-    this.notes = this.configService.notes
   }
 
   init(ctx: CanvasRenderingContext2D) {
@@ -29,7 +27,7 @@ export class AnimationService {
 
     this.initDraw()
 
-    document.addEventListener('visibilitychange', (event) => {
+    document.addEventListener('visibilitychange', () => {
       if (this._isStarted) {
         this.toggle()
       }
@@ -41,11 +39,8 @@ export class AnimationService {
 
   initDraw() {
     this.blocks = []
-    this._isStarted = false
+    this.pause()
 
-    if (this.animationSubscription) {
-      this.animationSubscription.unsubscribe()
-    }
     this.ctx.clearRect(0, 0, 1000, 600);
 
     for (let i = 0; i < 8; i++) {
@@ -55,11 +50,10 @@ export class AnimationService {
           height: this.configService.dh * (8 - i) + this.configService.minHeight,
           width: 80,
           y: 0,
-          x: i* 120 + 40,
-          i: i
+          x: i* 120 + 40
         })
       )
-      this.blocks.forEach((block, i) => block.addCollideListener((data: any) => {
+      this.blocks.forEach((block, i) => block.addCollideListener(() => {
         this.soundService.triggerNote(this.configService.notes[i])
       }))
     }
@@ -71,11 +65,22 @@ export class AnimationService {
 
   toggle() {
     if (this._isStarted) {
-      this.animationSubscription.unsubscribe()
+      this.pause()
     } else {
-      this.animationSubscription = this.animationFrame.$frames.subscribe((elapsed) => this.draw(elapsed))
+      this.start()
     }
-    this._isStarted = !this._isStarted
+  }
+
+  pause() {
+    if (this.animationSubscription) {
+      this.animationSubscription.unsubscribe()
+    }
+    this._isStarted = false
+  }
+
+  start() {
+    this.animationSubscription = this.animationFrame.$frames.subscribe((elapsed) => this.draw(elapsed))
+    this._isStarted = true
   }
 
   draw(elapsed: number) {

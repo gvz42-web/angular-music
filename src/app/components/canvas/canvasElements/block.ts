@@ -5,7 +5,6 @@ interface IBlockConfig {
   width: number
   y: number
   x: number
-  i: number
   ctx: CanvasRenderingContext2D
 }
 
@@ -17,7 +16,6 @@ export class Block {
   private ctx: CanvasRenderingContext2D;
   private direction: boolean;
   private collideListeners: Function[];
-  private i: number;
   private effect!: Effect | undefined;
 
   constructor(config: IBlockConfig) {
@@ -27,7 +25,6 @@ export class Block {
     this.x = config.x
     this.y = config.y
     this.direction = true
-    this.i = config.i
     this.collideListeners = []
 
     this.draw()
@@ -67,9 +64,7 @@ export class Block {
     if ((this.y + this.height >= 600 && this.direction) || (this.y <= 0 && !this.direction)) {
       this.reverse()
       this.collideListeners.forEach((fn) => {
-        fn({
-          index: this.i
-        })
+        fn()
       })
       this.effect = new Effect(this.ctx, 1000)
     }
